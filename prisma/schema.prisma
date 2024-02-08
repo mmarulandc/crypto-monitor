@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "windows"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId    Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String   @db.VarChar(20)
+  lastname  String   @db.VarChar(50)
+  username  String   @db.VarChar(50) @unique
+  favoriteCurrency  Currency @relation(fields: [favoriteCurrencyId], references: [currencyId])
+  favoriteCurrencyId Int    @unique
+  cryptocurrencies   Crytocurrency[]
+}
+
+model Currency {
+  currencyId     Int     @id @default(autoincrement())
+  name   String  @db.VarChar(4)
+  users User[]
+}
+
+model Crytocurrency {
+  cryptocurrencyId    Int @id @default(autoincrement())
+  geckocoinId         String @unique
+  @@index([geckocoinId], type: Hash)
+  symbol              String @unique
+  name        	      String
+  image               String?
+  user                User @relation(fields: [userId], references: [userId])
+  userId              Int @unique
+}
+
+// model User {
+//   id      Int      @id @default(autoincrement())
+//   email   String   @unique
+//   name    String?
+//   posts   Post[]
+//   profile Profile?
+// }
