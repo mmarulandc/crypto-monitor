@@ -3,6 +3,8 @@ import Axios from 'axios';
 
 @Injectable()
 export class CoingeckoService {
-  private baseURL = 'https://www.coingecko.com/api'
+  readonly baseURL = 'https://www.coingecko.com/api';
+  
+
   
 }
